@@ -16,8 +16,6 @@ export default function registMouseDownDrag(
     onMouseDown: (clickEvent: React.MouseEvent<Element, MouseEvent>) => {
       if (stopPropagation) clickEvent.stopPropagation();
 
-      console.log('as');
-
       const mouseMoveHandler = (moveEvent: MouseEvent) => {
         const deltaX = moveEvent.screenX - clickEvent.screenX;
         const deltaY = moveEvent.screenY - clickEvent.screenY;

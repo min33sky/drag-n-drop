@@ -9,6 +9,7 @@ export default function Header() {
         <Link to="/drag">Drag</Link>
         <Link to="/touch">Touch</Link>
         <Link to="/resize">Resize</Link>
+        <Link to="/carousel">Carousel</Link>
         <Link to="/test">Test</Link>
       </nav>
     </header>

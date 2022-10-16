@@ -11,22 +11,24 @@ const imageList = [
   'https://blog.kakaocdn.net/dn/bG3iVL/btqUvCZPaRL/ofIjkNWJP1mj2bOG9fie51/img.jpg',
 ];
 
-export default function Carousel() {
+// width 1일 떄 height의 비율
+const ASPECT_RADIO = 1;
+
+export default function CarouselInfinity() {
   const [hide, setHide] = useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(1);
   const [transX, setTransX] = useState(0);
+  const [animate, setAnimate] = useState(false);
 
-  const { ref, width, height } = useCarouselSize();
+  const slideList = [imageList.at(-1), ...imageList, imageList.at(0)];
 
-  console.log('ref: ', ref);
-  console.log('width: ', width);
-  console.log('height: ', height);
+  const { ref: carouselRef, width, height } = useCarouselSize();
 
   return (
     <>
       <div className="p-4">
         <div className="mb-2 whitespace-nowrap">
-          <h1 className="text-3xl font-bold">Carousel</h1>
+          <h1 className="text-3xl font-bold">Infinite Carousel</h1>
           <span>slide width darg</span>
           <span className="ml-4">current index {currentIndex}</span>
           <span className="ml-4">transX {transX}</span>
@@ -44,8 +46,8 @@ export default function Carousel() {
       </div>
 
       <div
-        ref={ref}
-        className="w-full max-w-md"
+        ref={carouselRef}
+        className="flex w-full max-w-md"
         style={{
           height,
           overflow: hide ? 'hidden' : 'visible',
@@ -55,33 +57,37 @@ export default function Carousel() {
           className="flex"
           style={{
             transform: `translateX(${-currentIndex * width + transX}px)`,
-            transition: `transform ${transX ? 0 : 300}ms ease-in-out 0s`,
+            transition: `transform ${animate ? 300 : 0}ms ease-in-out 0s`,
           }}
           {...registerDragEvent({
             onDragChange: (deltaX) => {
-              setTransX(inrange(deltaX, -width, width));
+              setTransX(inrange(deltaX, -width + 10, width - 10));
             },
             onDragEnd: (deltaX) => {
-              const maxIndex = imageList.length - 1;
+              const maxIndex = slideList.length - 1;
 
               if (deltaX < -100)
                 setCurrentIndex(inrange(currentIndex + 1, 0, maxIndex));
               if (deltaX > 100)
                 setCurrentIndex(inrange(currentIndex - 1, 0, maxIndex));
 
+              setAnimate(true);
               setTransX(0);
             },
           })}
+          onTransitionEnd={() => {
+            setAnimate(false);
+
+            if (currentIndex === 0) {
+              setCurrentIndex(slideList.length - 2);
+            } else if (currentIndex === slideList.length - 1) {
+              setCurrentIndex(1);
+            }
+          }}
         >
-          {imageList.map((url, i) => (
+          {slideList.map((url, i) => (
             <div key={i} className="flex-shrink-0">
-              <img
-                onClick={() => console.log('image: ', i)}
-                draggable={false}
-                src={url}
-                alt="img"
-                width={width}
-              />
+              <img draggable={false} src={url} alt="img" width={width} />
             </div>
           ))}
         </div>
