@@ -5,6 +5,7 @@ import HomePage from './pages/home';
 import Header from './components/Header';
 import TestPage from './pages/test';
 import TouchPage from './pages/touch';
+import ResizePage from './pages/resize';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/drag" element={<Drag />} />
         <Route path="/carousel" element={<Carousel />} />
         <Route path="/touch" element={<TouchPage />} />
+        <Route path="/resize" element={<ResizePage />} />
         <Route path="/test" element={<TestPage />} />
         <Route path="/" element={<HomePage />} />
       </Routes>

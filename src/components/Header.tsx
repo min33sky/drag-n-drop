@@ -8,6 +8,7 @@ export default function Header() {
         <Link to="/">Home</Link>
         <Link to="/drag">Drag</Link>
         <Link to="/touch">Touch</Link>
+        <Link to="/resize">Resize</Link>
         <Link to="/test">Test</Link>
       </nav>
     </header>
